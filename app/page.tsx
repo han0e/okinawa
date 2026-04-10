@@ -586,6 +586,32 @@ const Portfolio = () => {
           </section>
         </div>
 
+        {/* JIT 컴파일러 캐시 누락을 완벽히 방어(Bypass)하기 위한 순수 CSS 강제 주입 */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          .design-icon-wrapper:hover .design-icon-box {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+          }
+          .design-icon-tooltip {
+            transform: translate(-50%, 4px);
+          }
+          .design-icon-wrapper:hover .design-icon-tooltip {
+            opacity: 1;
+            transform: translate(-50%, 0px);
+          }
+          .design-gallery-wrapper:hover .design-gallery-img {
+            transform: scale(1.05);
+            filter: brightness(0.95);
+          }
+          .design-gallery-wrapper:hover .design-gallery-ui {
+            opacity: 1;
+          }
+        `,
+          }}
+        />
+
         {/* Design Section (상하 패딩 없애고 꽉 차게) */}
         <section
           id="design-anchor"
@@ -649,14 +675,17 @@ const Portfolio = () => {
                     shadow: "shadow-[#0FAAFF]/40",
                   },
                 ].map((sw) => (
-                  <div key={sw.name} className="group/icon relative mt-2">
+                  <div
+                    key={sw.name}
+                    className="design-icon-wrapper relative mt-2"
+                  >
                     <div
-                      className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${sw.color} flex items-center justify-center text-white shadow-xl ${sw.shadow} border-t border-white/20 group-hover/icon:-translate-y-1.5 group-hover/icon:shadow-2xl transition-all duration-400 cursor-default`}
+                      className={`design-icon-box w-20 h-20 rounded-2xl bg-gradient-to-br ${sw.color} flex items-center justify-center text-white shadow-xl ${sw.shadow} border-t border-white/20 transition-all duration-300 cursor-default`}
                     >
                       {sw.icon}
                     </div>
                     {/* Glassmorphism Tooltip */}
-                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl bg-white/70 dark:bg-[#181a20]/60 backdrop-blur-md border border-white/80 dark:border-slate-700/80 shadow-lg opacity-0 group-hover/icon:opacity-100 transition-all duration-300 pointer-events-none z-20 translate-y-1 group-hover/icon:translate-y-0 text-slate-800 dark:text-slate-200 text-[10px] font-bold font-mono tracking-widest uppercase whitespace-nowrap">
+                    <div className="design-icon-tooltip absolute -top-12 left-1/2 px-4 py-2 rounded-xl bg-white/70 dark:bg-[#181a20]/60 backdrop-blur-md border border-white/80 dark:border-slate-700/80 shadow-lg opacity-0 transition-all duration-300 pointer-events-none z-20 text-slate-800 dark:text-slate-200 text-[10px] font-bold font-mono tracking-widest uppercase whitespace-nowrap">
                       {sw.name}
                     </div>
                   </div>
@@ -680,30 +709,36 @@ const Portfolio = () => {
                   <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                 </span>
                 <span className="relative z-10">
-                  #Rendering
                   <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                 </span>
               </div>
             </div>
 
-            {/* 카드 내 슬라이더 컨트롤 */}
+            {/* 갤러리 슬라이더 영역 */}
             <div
-              className="lg:col-span-8 relative min-h-[350px] lg:min-h-[500px] h-full w-full bg-slate-50 dark:bg-[#1e2129] overflow-hidden cursor-zoom-in group/image"
+              className="design-gallery-wrapper lg:col-span-8 relative min-h-[350px] lg:min-h-[500px] h-full w-full bg-slate-50 dark:bg-[#1e2129] overflow-hidden cursor-zoom-in isolate rounded-2xl lg:rounded-none lg:rounded-r-2xl"
               onClick={() => setIsRenderModalOpen(true)}
             >
-              <Image
-                src={visualizationImages[currentRenderIndex]}
-                alt="Rendering"
-                fill
-                className="object-cover transition-transform duration-700 group-hover/image:scale-105"
-                priority
-              />
-              <div className="absolute inset-0 bg-black/5 opacity-0 group-hover/image:opacity-100 transition-opacity flex items-center justify-center">
-                <div className="bg-white dark:bg-[#181a20]/90 backdrop-blur-md px-4 py-2 rounded-full text-[11px] font-bold font-mono text-black dark:text-white uppercase tracking-widest flex items-center gap-2 shadow-sm dark:shadow-none border border-slate-100 dark:border-slate-700/40">
-                  <Maximize2 size={14} /> Click to Expand
+              {/* 이미지 래퍼 */}
+              <div className="design-gallery-img absolute inset-0 w-full h-full z-0 pointer-events-none transition-all duration-1000 ease-out transform">
+                <Image
+                  src={visualizationImages[currentRenderIndex]}
+                  alt="Rendering"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+
+              {/* 프리미엄 글래스모피즘 중앙 오버레이 */}
+              <div className="design-gallery-ui absolute inset-0 opacity-0 transition-opacity duration-700 flex items-center justify-center pointer-events-none z-10">
+                <div className="transform translate-y-0 bg-white/50 dark:bg-black/50 backdrop-blur-md px-6 py-3 rounded-full text-[12px] font-bold font-mono text-black dark:text-white uppercase tracking-widest flex items-center gap-2 border border-white/50 shadow-2xl">
+                  <Maximize2 size={16} /> Click to Expand
                 </div>
               </div>
-              <div className="absolute inset-y-0 left-0 right-0 flex justify-between items-center px-4 pointer-events-none">
+
+              {/* 컨트롤 버튼 구역 */}
+              <div className="design-gallery-ui absolute inset-y-0 left-0 right-0 flex justify-between items-center px-4 pointer-events-none z-20 opacity-0 transition-opacity duration-500">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -713,7 +748,7 @@ const Portfolio = () => {
                         visualizationImages.length,
                     );
                   }}
-                  className="p-3 bg-white dark:bg-[#181a20]/40 backdrop-blur-md text-black dark:text-white rounded-full opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto hover:bg-white dark:bg-[#181a20] shadow-lg"
+                  className="p-3 bg-white dark:bg-[#181a20]/40 backdrop-blur-md text-black dark:text-white rounded-full transition-all pointer-events-auto hover:bg-white dark:bg-[#181a20] shadow-lg"
                 >
                   <ChevronLeft size={24} />
                 </button>
@@ -724,7 +759,7 @@ const Portfolio = () => {
                       (p) => (p + 1) % visualizationImages.length,
                     );
                   }}
-                  className="p-3 bg-white dark:bg-[#181a20]/40 backdrop-blur-md text-black dark:text-white rounded-full opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto hover:bg-white dark:bg-[#181a20] shadow-lg"
+                  className="p-3 bg-white dark:bg-[#181a20]/40 backdrop-blur-md text-black dark:text-white rounded-full transition-all pointer-events-auto hover:bg-white dark:bg-[#181a20] shadow-lg"
                 >
                   <ChevronRight size={24} />
                 </button>
@@ -756,11 +791,25 @@ const Portfolio = () => {
           </p>
           <div className="flex flex-col items-center gap-3">
             <p className="text-[11px] text-slate-400 dark:text-slate-500 tracking-wide font-light break-keep text-center">
-              이 페이지는 <span className="font-bold text-slate-600 dark:text-slate-300">Vibe Coding</span>으로 제작되었으며, 다음 기술 스택이 사용되었습니다.
+              이 페이지는{" "}
+              <span className="font-bold text-slate-600 dark:text-slate-300">
+                Vibe Coding
+              </span>
+              으로 제작되었습니다.
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
-              {["Next.js", "React", "Tailwind CSS", "TypeScript", "Framer Motion", "Lucide Icons"].map((tech) => (
-                <span key={tech} className="px-2.5 py-1 bg-slate-200/50 dark:bg-[#1e2129] border border-slate-300/50 dark:border-slate-700/50 text-slate-600 dark:text-slate-400 text-[9px] font-mono rounded-full uppercase tracking-widest shadow-sm">
+              {[
+                "Next.js",
+                "React",
+                "Tailwind CSS",
+                "TypeScript",
+                "Framer Motion",
+                "Lucide Icons",
+              ].map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2.5 py-1 bg-slate-200/50 dark:bg-[#1e2129] border border-slate-300/50 dark:border-slate-700/50 text-slate-600 dark:text-slate-400 text-[9px] font-mono rounded-full uppercase tracking-widest shadow-sm"
+                >
                   {tech}
                 </span>
               ))}
@@ -775,7 +824,10 @@ const Portfolio = () => {
           className="fixed inset-0 bg-black/95 z-[200] flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
           onClick={() => setIsRenderModalOpen(false)}
         >
-          <button className="absolute top-8 right-8 p-3 bg-white dark:bg-[#181a20]/10 text-white rounded-full hover:bg-white dark:bg-[#181a20]/20 transition-all z-[210]">
+          <button
+            className="absolute top-8 right-8 p-3 bg-white/20 hover:bg-white/40 text-white rounded-full transition-all z-[210]"
+            onClick={() => setIsRenderModalOpen(false)}
+          >
             <X size={28} />
           </button>
 
@@ -789,7 +841,7 @@ const Portfolio = () => {
                   visualizationImages.length,
               );
             }}
-            className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 p-4 bg-white dark:bg-[#181a20]/10 hover:bg-white dark:bg-[#181a20]/30 backdrop-blur-md text-white rounded-full transition-all z-[210]"
+            className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 p-4 bg-white/20 hover:bg-white/40 backdrop-blur-md text-white rounded-full transition-all z-[210]"
           >
             <ChevronLeft size={32} />
           </button>
@@ -802,7 +854,7 @@ const Portfolio = () => {
                 (p) => (p + 1) % visualizationImages.length,
               );
             }}
-            className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 p-4 bg-white dark:bg-[#181a20]/10 hover:bg-white dark:bg-[#181a20]/30 backdrop-blur-md text-white rounded-full transition-all z-[210]"
+            className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 p-4 bg-white/20 hover:bg-white/40 backdrop-blur-md text-white rounded-full transition-all z-[210]"
           >
             <ChevronRight size={32} />
           </button>

@@ -46,9 +46,14 @@ body {
   background: #475569; /* slate-600 */
 }
 
-/* 테마 전환 시 부드러운 색상 애니메이션 (레이아웃, 위치 변형 제외) */
+/* 테마 전환 시 부드러운 색상 애니메이션 - transform/opacity는 건드리지 않음 */
 html * {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-duration: 400ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 단, transition-all 또는 별도 transition을 가진 요소는 override 허용 */
+html *[class*="transition-"] {
+  transition-property: all;
 }
