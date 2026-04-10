@@ -90,6 +90,8 @@ const Portfolio = () => {
     "/images/render (35).webp",
     "/images/render (36).webp",
     "/images/render (37).webp",
+    "/images/render (38).png",
+    "/images/render (39).png",
   ];
 
   const projects = [
@@ -709,6 +711,19 @@ const Portfolio = () => {
                   <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                 </span>
                 <span className="relative z-10">
+                  #Design
+                  <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
+                </span>
+                <span className="relative z-10">
+                  #Rendering
+                  <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
+                </span>
+                <span className="relative z-10">
+                  #Excel(Google Spreadsheet)
+                  <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
+                </span>
+                <span className="relative z-10">
+                  #PowerPoint
                   <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                 </span>
               </div>
