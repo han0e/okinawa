@@ -17,7 +17,18 @@ import {
   Box,
   Palette,
   Maximize2,
+  Aperture,
+  Sun,
+  Moon,
 } from "lucide-react";
+import {
+  SiAutocad,
+  SiSketchup,
+  SiDassaultsystemes,
+  SiSap,
+} from "react-icons/si";
+import { TbBrandOffice } from "react-icons/tb";
+import { motion } from "framer-motion";
 
 const Portfolio = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
@@ -25,9 +36,18 @@ const Portfolio = () => {
   );
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [currentRenderIndex, setCurrentRenderIndex] = useState(0);
-  const [activeSection, setActiveSection] = useState("work");
+  const [activeSection, setActiveSection] = useState("header");
   const [isRenderModalOpen, setIsRenderModalOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   const navWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -106,7 +126,13 @@ const Portfolio = () => {
         "자동 이메일 발송 시스템",
         "데이터 정합성 자가 검증",
       ],
-      images: ["/images/salarium_1.png", "/images/salarium_2.png"],
+      images: [
+        "/images/salarium_1.png",
+        "/images/salarium_2.png",
+        "/images/salarium_3.png",
+        "/images/salarium_4.png",
+        "/images/salarium_5.png",
+      ],
       hasImages: true,
       hasLink: false,
     },
@@ -280,32 +306,38 @@ const Portfolio = () => {
       }
 
       const sections = [
-        { id: "header", name: "work" },
+        { id: "header", name: "header" },
         { id: "work-anchor", name: "work" },
         { id: "design-anchor", name: "design" },
         { id: "footer", name: "footer" },
       ];
-      const scrollPosition = window.scrollY + 250;
+      let currentSection = "header";
       for (const section of sections) {
         const element = document.getElementById(section.id);
         if (element) {
-          const top = element.offsetTop;
-          if (
-            scrollPosition >= top &&
-            scrollPosition < top + element.offsetHeight
-          ) {
-            setActiveSection(section.name);
-            break;
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 250) {
+            currentSection = section.name;
           }
         }
       }
+
+      // Check if scrolled to the absolute bottom
+      if (
+        Math.ceil(window.innerHeight + window.scrollY) >=
+        document.documentElement.scrollHeight - 100
+      ) {
+        currentSection = "footer";
+      }
+
+      setActiveSection(currentSection);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
-    setActiveSection(id === "header" ? "work" : id);
+    setActiveSection(id);
     const targetId =
       id === "work" ? "work-anchor" : id === "design" ? "design-anchor" : id;
     const element = document.getElementById(targetId);
@@ -319,33 +351,35 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f3f4f6] text-[#1a1a1a] pb-32 font-sans font-light antialiased selection:bg-[#ffeb3b]/60 relative">
+    <div
+      className={`${isDarkMode ? "dark" : ""} min-h-screen bg-[#f3f4f6] dark:bg-[#0f1117] text-[#1a1a1a] dark:text-slate-100 pb-32 font-sans font-light antialiased selection:bg-[#ffeb3b]/60 relative`}
+    >
       {/* Intro & Header */}
       <header
         id="header"
         className="max-w-6xl mx-auto px-6 pt-32 pb-8 relative z-10"
       >
-        <div className="flex items-center gap-2 text-slate-400 font-mono text-[11px] tracking-[0.2em] uppercase mb-6">
+        <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 font-mono text-[11px] tracking-[0.2em] uppercase mb-6">
           <span className="w-1.5 h-1.5 bg-slate-400 rounded-full"></span>
           <span>Connecting Silos with Tech</span>
         </div>
-        <h1 className="text-4xl md:text-7xl font-light tracking-tighter leading-[1.1] text-black mb-8 break-keep relative">
+        <h1 className="text-4xl md:text-7xl font-light tracking-tighter leading-[1.1] text-black dark:text-white mb-8 break-keep relative">
           실무와 기술 사이의 빈틈을 메우는
           <br className="md:block hidden" />
-          <span className="relative z-10 font-bold">
+          <span className="relative z-10 inline-block font-bold mt-2 text-black dark:text-white">
+            <span className="absolute left-0 -bottom-1 w-full h-[12px] bg-[#ffee00] -z-10 rounded-sm"></span>
             김한영
-            <span className="absolute left-0 bottom-1 w-full h-[12px] bg-[#ffeb3b] -z-10 rounded-sm"></span>
           </span>
           입니다.
         </h1>
-        <p className="text-lg md:text-xl text-slate-500 max-w-2xl leading-relaxed font-light break-keep">
+        <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed font-light break-keep">
           현장의 메커니즘을 이해하고 데이터를 설계하는 조력자입니다.
         </p>
       </header>
 
       {/* Sticky 네비게이션 */}
       <div className="sticky top-8 z-[100] w-full flex justify-center px-6 mb-24 pointer-events-none">
-        <nav className="pointer-events-auto flex items-center gap-8 px-10 py-4 rounded-full border border-slate-200 bg-white/90 backdrop-blur-xl shadow-2xl shadow-slate-300/40">
+        <nav className="pointer-events-auto flex items-center gap-8 px-10 py-4 rounded-full bg-white/70 dark:bg-[#181a20]/40 backdrop-blur-md border border-white/80 dark:border-slate-700/80 shadow-lg">
           {[
             { name: "KIM HAN YEONG", id: "header" },
             { name: "Work", id: "work" },
@@ -355,61 +389,78 @@ const Portfolio = () => {
             <button
               key={item.name}
               onClick={() => scrollToSection(item.id)}
-              className={`font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] relative transition-colors ${index === 0 ? "text-black border-r border-slate-200 pr-8 font-bold hidden md:block" : "text-slate-400 hover:text-black"} ${
-                activeSection === item.id ||
-                (item.id === "header" && activeSection === "work") ||
-                (item.id === "footer" && activeSection === "footer")
-                  ? "text-black font-bold"
+              className={`font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] relative transition-colors ${
+                index === 0
+                  ? "border-r border-slate-200 dark:border-slate-700/60 pr-8 hidden md:block"
                   : ""
+              } ${
+                activeSection === item.id
+                  ? "text-black dark:text-white font-bold"
+                  : "text-slate-400 dark:text-slate-500 hover:text-black dark:hover:text-white"
               }`}
             >
-              {item.name}
-              {(activeSection === item.id ||
-                (item.id === "header" && activeSection === "work") ||
-                (item.id === "footer" && activeSection === "footer")) &&
-                index !== 0 && (
-                  <span className="absolute -bottom-1.5 left-0 w-full h-1 bg-[#ffeb3b] rounded-full"></span>
+              <span className="relative z-10 inline-block">
+                {item.name}
+                {activeSection === item.id && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1.5 left-0 w-full h-1.5 bg-[#ffee00] rounded-full -z-10"
+                    transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                  />
                 )}
+              </span>
             </button>
           ))}
+
+          {/* Dark Mode Toggle */}
+          <div className="w-[1px] h-4 bg-slate-200 dark:bg-slate-700 ml-2"></div>
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="ml-2 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors"
+          >
+            {isDarkMode ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
         </nav>
       </div>
 
       <main className="max-w-6xl mx-auto px-6 space-y-20 relative z-0">
         {/* Engineering Core */}
-        <section className="bg-white rounded-[2rem] p-8 md:p-12 border border-slate-200 shadow-sm relative overflow-hidden font-light">
+        <section
+          id="work-anchor"
+          className="scroll-mt-40 bg-white dark:bg-[#181a20] rounded-[2rem] p-8 md:p-12 border border-slate-200 dark:border-slate-700/60 shadow-sm dark:shadow-none relative overflow-hidden font-light"
+        >
           <div className="flex flex-col lg:flex-row gap-12 relative z-10">
             <div className="lg:w-1/3">
               <div className="flex items-center gap-3 text-blue-600 uppercase tracking-[0.3em] font-bold text-xs mb-6 font-mono">
                 <Settings size={18} />
                 <span>Engineering Core</span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tighter text-black uppercase mb-6 leading-none tracking-tight">
+              <h2 className="text-3xl font-bold tracking-tighter text-black dark:text-white uppercase mb-6 leading-none tracking-tight">
                 Field Experience
                 <br />& System PM
               </h2>
-              <p className="text-sm text-slate-500 leading-relaxed font-medium">
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
                 데이터의 단절을 해결하여 업무 효율을 개선하는 실무
                 엔지니어입니다.
               </p>
             </div>
             <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8 font-light">
-              <div className="space-y-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                <div className="flex items-center gap-2 text-black font-semibold text-sm uppercase font-mono">
+              <div className="space-y-4 p-5 bg-slate-50 dark:bg-[#1e2129] rounded-2xl border border-slate-100 dark:border-slate-700/40">
+                <div className="flex items-center gap-2 text-black dark:text-white font-semibold text-sm uppercase font-mono">
                   <Cpu size={14} className="text-blue-600" />
                   <h4>Technical Support</h4>
                 </div>
-                <p className="text-[13px] text-slate-600 leading-relaxed">
+                <p className="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed">
                   현대차 협력사 설계 경력 및 남양연구소 자율주행 로봇 기술 지원
                   수행.
                 </p>
               </div>
-              <div className="space-y-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                <div className="flex items-center gap-2 text-black font-semibold text-sm uppercase font-mono">
+              <div className="space-y-4 p-5 bg-slate-50 dark:bg-[#1e2129] rounded-2xl border border-slate-100 dark:border-slate-700/40">
+                <div className="flex items-center gap-2 text-black dark:text-white font-semibold text-sm uppercase font-mono">
                   <ShieldCheck size={14} className="text-blue-600" />
                   <h4>System Management</h4>
                 </div>
-                <p className="text-[13px] text-slate-600 leading-relaxed">
+                <p className="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed">
                   SAP B1 도입 PM 및 실무 연계 프로그램 직접 제작/자동화 구현.
                 </p>
               </div>
@@ -420,12 +471,12 @@ const Portfolio = () => {
         {/* Work Section */}
         <div className="space-y-10">
           <section className="space-y-6">
-            <div
-              id="work-anchor"
-              className="flex items-center gap-3 border-b border-slate-200 pb-3"
-            >
-              <Monitor size={16} className="text-slate-400" />
-              <h2 className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400 font-mono">
+            <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-700/60 pb-3">
+              <Monitor
+                size={16}
+                className="text-slate-400 dark:text-slate-500"
+              />
+              <h2 className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 font-mono">
                 Internal Programs
               </h2>
             </div>
@@ -435,11 +486,11 @@ const Portfolio = () => {
                 .map((p) => (
                   <div
                     key={p.id}
-                    className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group h-full"
+                    className="bg-white dark:bg-[#181a20] rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm dark:shadow-none hover:shadow-md transition-all flex flex-col justify-between group h-full"
                   >
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center font-mono text-slate-400 text-[9px]">
-                        <span className="border border-slate-100 bg-slate-50 px-2 py-0.5 rounded">
+                      <div className="flex justify-between items-center font-mono text-slate-400 dark:text-slate-500 text-[9px]">
+                        <span className="border border-slate-100 dark:border-slate-700/40 bg-slate-50 dark:bg-[#1e2129] px-2 py-0.5 rounded">
                           {p.lang}
                         </span>
                         {p.hasImages && (
@@ -448,19 +499,19 @@ const Portfolio = () => {
                           </span>
                         )}
                       </div>
-                      <h3 className="text-xl font-bold text-black group-hover:text-blue-600 transition-colors tracking-tight">
+                      <h3 className="text-xl font-bold text-black dark:text-white group-hover:text-blue-600 transition-colors tracking-tight">
                         {p.title}
                       </h3>
-                      <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-2">
+                      <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">
                         {p.desc}
                       </p>
                     </div>
-                    <div className="flex justify-between items-center mt-6 pt-5 border-t border-slate-50">
-                      <div className="flex gap-4 font-mono text-[11px] text-slate-800 tracking-[0.1em] font-bold uppercase">
+                    <div className="flex justify-between items-center mt-6 pt-5 border-t border-slate-50 dark:border-slate-700/40">
+                      <div className="flex gap-4 font-mono text-[11px] text-slate-800 dark:text-slate-200 tracking-[0.1em] font-bold uppercase">
                         {p.displayTech?.map((t) => (
                           <span key={t} className="relative z-10">
                             {t}
-                            <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffeb3b]/60 -z-10"></span>
+                            <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                           </span>
                         ))}
                       </div>
@@ -479,9 +530,9 @@ const Portfolio = () => {
           </section>
 
           <section className="space-y-6">
-            <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
-              <Globe size={16} className="text-slate-400" />
-              <h2 className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400 font-mono">
+            <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-700/60 pb-3">
+              <Globe size={16} className="text-slate-400 dark:text-slate-500" />
+              <h2 className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 font-mono">
                 Web Applications
               </h2>
             </div>
@@ -491,30 +542,30 @@ const Portfolio = () => {
                 .map((p) => (
                   <div
                     key={p.id}
-                    className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group h-full"
+                    className="bg-white dark:bg-[#181a20] rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm dark:shadow-none hover:shadow-md transition-all flex flex-col justify-between group h-full"
                   >
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center font-mono text-slate-400 text-[9px]">
-                        <span className="border border-slate-100 bg-slate-50 px-2 py-0.5 rounded uppercase">
+                      <div className="flex justify-between items-center font-mono text-slate-400 dark:text-slate-500 text-[9px]">
+                        <span className="border border-slate-100 dark:border-slate-700/40 bg-slate-50 dark:bg-[#1e2129] px-2 py-0.5 rounded uppercase">
                           {p.lang}
                         </span>
                         <span className="font-bold text-emerald-500 uppercase tracking-widest">
                           Live
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold text-black tracking-tight group-hover:text-emerald-500 transition-colors">
+                      <h3 className="text-xl font-bold text-black dark:text-white tracking-tight group-hover:text-emerald-500 transition-colors">
                         {p.title}
                       </h3>
-                      <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-2">
+                      <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">
                         {p.desc}
                       </p>
                     </div>
-                    <div className="flex justify-between items-center mt-6 pt-5 border-t border-slate-50">
-                      <div className="flex gap-4 font-mono text-[11px] text-slate-800 tracking-[0.1em] font-bold uppercase">
+                    <div className="flex justify-between items-center mt-6 pt-5 border-t border-slate-50 dark:border-slate-700/40">
+                      <div className="flex gap-4 font-mono text-[11px] text-slate-800 dark:text-slate-200 tracking-[0.1em] font-bold uppercase">
                         {p.displayTech?.map((t) => (
                           <span key={t} className="relative z-10">
                             {t}
-                            <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffeb3b]/60 -z-10"></span>
+                            <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                           </span>
                         ))}
                       </div>
@@ -523,7 +574,7 @@ const Portfolio = () => {
                           href={p.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-emerald-500 hover:text-white transition-all shadow-md"
+                          className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:bg-emerald-500 hover:text-white transition-all shadow-md"
                         >
                           <ExternalLink size={14} />
                         </a>
@@ -536,15 +587,21 @@ const Portfolio = () => {
         </div>
 
         {/* Design Section (상하 패딩 없애고 꽉 차게) */}
-        <section className="bg-white rounded-[2rem] border border-slate-200 shadow-sm relative group overflow-hidden transition-all duration-500">
-          <div className="p-8 md:p-10 border-b border-slate-100 flex items-center justify-between">
+        <section
+          id="design-anchor"
+          className="scroll-mt-40 bg-white dark:bg-[#181a20] rounded-[2rem] border border-slate-200 dark:border-slate-700/60 shadow-sm dark:shadow-none relative group overflow-hidden transition-all duration-500"
+        >
+          <div className="p-8 md:p-10 border-b border-slate-100 dark:border-slate-700/40 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Palette size={20} className="text-slate-400" />
-              <h2 className="text-[11px] font-medium uppercase tracking-[0.3em] text-slate-400 font-mono">
+              <Palette
+                size={20}
+                className="text-slate-400 dark:text-slate-500"
+              />
+              <h2 className="text-[11px] font-medium uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 font-mono">
                 Design & Visualization
               </h2>
             </div>
-            <div className="flex gap-4 font-mono text-[10px] text-slate-400 uppercase tracking-widest">
+            <div className="flex gap-4 font-mono text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest">
               <span>AutoCAD</span> / <span>Solidworks</span> /{" "}
               <span>KeyShot</span> / <span>SketchUp</span>
             </div>
@@ -552,32 +609,86 @@ const Portfolio = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-4 p-8 md:p-12 space-y-6 flex flex-col justify-center">
-              <div id="design-anchor" className="scroll-mt-40">
-                <h3 className="text-2xl font-bold text-black leading-tight uppercase tracking-tighter font-black">
+              {/* Software Icons */}
+              <div className="flex gap-5 mb-6 flex-wrap">
+                {[
+                  {
+                    name: "AutoCAD",
+                    icon: <SiAutocad size={46} />,
+                    color: "from-[#E32119] to-[#8A140F]",
+                    shadow: "shadow-[#E32119]/40",
+                  },
+                  {
+                    name: "Solidworks",
+                    icon: <SiDassaultsystemes size={44} />,
+                    color: "from-[#D9252A] to-[#A31C1F]",
+                    shadow: "shadow-[#D9252A]/40",
+                  },
+                  {
+                    name: "Office 365",
+                    icon: <TbBrandOffice size={44} strokeWidth={1.5} />,
+                    color: "from-[#D83B01] to-[#BA3301]",
+                    shadow: "shadow-[#D83B01]/40",
+                  },
+                  {
+                    name: "SketchUp",
+                    icon: <SiSketchup size={40} />,
+                    color: "from-[#005F9E] to-[#003B63]",
+                    shadow: "shadow-[#005F9E]/30",
+                  },
+                  {
+                    name: "KeyShot",
+                    icon: <Aperture size={46} strokeWidth={1.5} />,
+                    color: "from-[#111827] to-[#030712]",
+                    shadow: "shadow-slate-900/40",
+                  },
+                  {
+                    name: "SAP B1",
+                    icon: <SiSap size={46} />,
+                    color: "from-[#0FAAFF] to-[#007AC9]",
+                    shadow: "shadow-[#0FAAFF]/40",
+                  },
+                ].map((sw) => (
+                  <div key={sw.name} className="group/icon relative mt-2">
+                    <div
+                      className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${sw.color} flex items-center justify-center text-white shadow-xl ${sw.shadow} border-t border-white/20 group-hover/icon:-translate-y-1.5 group-hover/icon:shadow-2xl transition-all duration-400 cursor-default`}
+                    >
+                      {sw.icon}
+                    </div>
+                    {/* Glassmorphism Tooltip */}
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl bg-white/70 dark:bg-[#181a20]/60 backdrop-blur-md border border-white/80 dark:border-slate-700/80 shadow-lg opacity-0 group-hover/icon:opacity-100 transition-all duration-300 pointer-events-none z-20 translate-y-1 group-hover/icon:translate-y-0 text-slate-800 dark:text-slate-200 text-[10px] font-bold font-mono tracking-widest uppercase whitespace-nowrap">
+                      {sw.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold text-black dark:text-white leading-tight uppercase tracking-tighter font-black">
                   Technical
                   <br />
                   Illustration
                 </h3>
               </div>
-              <p className="text-[13px] text-slate-600 leading-relaxed break-keep">
+              <p className="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed break-keep">
                 사내 설비의 정밀 모델링 및 하이엔드 렌더링을 수행합니다. 정확한
                 의사결정을 지원하는 고해상도 시각 자료를 제공합니다.
               </p>
-              <div className="flex flex-wrap gap-4 font-mono text-[11px] text-slate-800 font-bold uppercase tracking-widest">
+              <div className="flex flex-wrap gap-4 font-mono text-[11px] text-slate-800 dark:text-slate-200 font-bold uppercase tracking-widest">
                 <span className="relative z-10">
                   #Modeling
-                  <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffeb3b]/60 -z-10"></span>
+                  <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                 </span>
                 <span className="relative z-10">
                   #Rendering
-                  <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffeb3b]/60 -z-10"></span>
+                  <span className="absolute left-0 bottom-0 w-full h-[6px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10"></span>
                 </span>
               </div>
             </div>
 
             {/* 카드 내 슬라이더 컨트롤 */}
             <div
-              className="lg:col-span-8 relative min-h-[350px] lg:min-h-[500px] h-full w-full bg-slate-50 overflow-hidden cursor-zoom-in group/image"
+              className="lg:col-span-8 relative min-h-[350px] lg:min-h-[500px] h-full w-full bg-slate-50 dark:bg-[#1e2129] overflow-hidden cursor-zoom-in group/image"
               onClick={() => setIsRenderModalOpen(true)}
             >
               <Image
@@ -588,7 +699,7 @@ const Portfolio = () => {
                 priority
               />
               <div className="absolute inset-0 bg-black/5 opacity-0 group-hover/image:opacity-100 transition-opacity flex items-center justify-center">
-                <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[11px] font-bold font-mono text-black uppercase tracking-widest flex items-center gap-2 shadow-sm border border-slate-100">
+                <div className="bg-white dark:bg-[#181a20]/90 backdrop-blur-md px-4 py-2 rounded-full text-[11px] font-bold font-mono text-black dark:text-white uppercase tracking-widest flex items-center gap-2 shadow-sm dark:shadow-none border border-slate-100 dark:border-slate-700/40">
                   <Maximize2 size={14} /> Click to Expand
                 </div>
               </div>
@@ -602,7 +713,7 @@ const Portfolio = () => {
                         visualizationImages.length,
                     );
                   }}
-                  className="p-3 bg-white/40 backdrop-blur-md text-black rounded-full opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto hover:bg-white shadow-lg"
+                  className="p-3 bg-white dark:bg-[#181a20]/40 backdrop-blur-md text-black dark:text-white rounded-full opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto hover:bg-white dark:bg-[#181a20] shadow-lg"
                 >
                   <ChevronLeft size={24} />
                 </button>
@@ -613,7 +724,7 @@ const Portfolio = () => {
                       (p) => (p + 1) % visualizationImages.length,
                     );
                   }}
-                  className="p-3 bg-white/40 backdrop-blur-md text-black rounded-full opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto hover:bg-white shadow-lg"
+                  className="p-3 bg-white dark:bg-[#181a20]/40 backdrop-blur-md text-black dark:text-white rounded-full opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto hover:bg-white dark:bg-[#181a20] shadow-lg"
                 >
                   <ChevronRight size={24} />
                 </button>
@@ -625,23 +736,37 @@ const Portfolio = () => {
 
       <footer
         id="footer"
-        className="max-w-6xl mx-auto px-6 mt-32 text-center pb-24 border-t border-slate-200 pt-16 font-mono text-[10px] tracking-[0.5em] uppercase"
+        className="max-w-6xl mx-auto px-6 mt-32 text-center pb-24 border-t border-slate-200 dark:border-slate-700/60 pt-16 font-mono text-[10px] tracking-[0.5em] uppercase"
       >
         <div className="mb-10 flex flex-col items-center gap-4">
-          <p className="text-slate-400 tracking-widest lowercase italic">
+          <p className="text-slate-400 dark:text-slate-500 tracking-widest lowercase italic">
             get in touch
           </p>
           <a
             href="mailto:han0e@kakao.com"
-            className="text-[18px] font-bold text-black tracking-normal lowercase relative z-10 group"
+            className="text-[18px] font-bold text-black dark:text-white tracking-normal lowercase relative z-10 group"
           >
             han0e@kakao.com
-            <span className="absolute left-0 bottom-1 w-full h-[8px] bg-[#ffeb3b]/60 -z-10 group-hover:h-full transition-all duration-300"></span>
+            <span className="absolute left-0 bottom-1 w-full h-[8px] bg-[#ffee00]/70 dark:bg-[#ffee00]/30 -z-10 group-hover:h-full transition-all duration-300"></span>
           </a>
         </div>
-        <p className="mt-20 text-slate-500 italic font-light tracking-widest">
-          © 2026 KIM HAN YEONG — ALL RIGHTS RESERVED
-        </p>
+        <div className="mt-20 flex flex-col items-center gap-6">
+          <p className="text-slate-500 dark:text-slate-400 italic font-light tracking-widest">
+            © 2026 KIM HAN YEONG — ALL RIGHTS RESERVED
+          </p>
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-[11px] text-slate-400 dark:text-slate-500 tracking-wide font-light break-keep text-center">
+              이 페이지는 <span className="font-bold text-slate-600 dark:text-slate-300">Vibe Coding</span>으로 제작되었으며, 다음 기술 스택이 사용되었습니다.
+            </p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {["Next.js", "React", "Tailwind CSS", "TypeScript", "Framer Motion", "Lucide Icons"].map((tech) => (
+                <span key={tech} className="px-2.5 py-1 bg-slate-200/50 dark:bg-[#1e2129] border border-slate-300/50 dark:border-slate-700/50 text-slate-600 dark:text-slate-400 text-[9px] font-mono rounded-full uppercase tracking-widest shadow-sm">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </footer>
 
       {/* --- [핵심 수정] 렌더링 확대 모달 (마우스 + 키보드 컨트롤 지원) --- */}
@@ -650,7 +775,7 @@ const Portfolio = () => {
           className="fixed inset-0 bg-black/95 z-[200] flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
           onClick={() => setIsRenderModalOpen(false)}
         >
-          <button className="absolute top-8 right-8 p-3 bg-white/10 text-white rounded-full hover:bg-white/20 transition-all z-[210]">
+          <button className="absolute top-8 right-8 p-3 bg-white dark:bg-[#181a20]/10 text-white rounded-full hover:bg-white dark:bg-[#181a20]/20 transition-all z-[210]">
             <X size={28} />
           </button>
 
@@ -664,7 +789,7 @@ const Portfolio = () => {
                   visualizationImages.length,
               );
             }}
-            className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white rounded-full transition-all z-[210]"
+            className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 p-4 bg-white dark:bg-[#181a20]/10 hover:bg-white dark:bg-[#181a20]/30 backdrop-blur-md text-white rounded-full transition-all z-[210]"
           >
             <ChevronLeft size={32} />
           </button>
@@ -677,7 +802,7 @@ const Portfolio = () => {
                 (p) => (p + 1) % visualizationImages.length,
               );
             }}
-            className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white rounded-full transition-all z-[210]"
+            className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 p-4 bg-white dark:bg-[#181a20]/10 hover:bg-white dark:bg-[#181a20]/30 backdrop-blur-md text-white rounded-full transition-all z-[210]"
           >
             <ChevronRight size={32} />
           </button>
@@ -707,16 +832,16 @@ const Portfolio = () => {
           onClick={closeModal}
         >
           <div
-            className="relative w-full max-w-6xl h-full md:h-auto max-h-[90vh] bg-white rounded-[2rem] overflow-hidden flex flex-col md:flex-row shadow-2xl animate-in zoom-in-95 duration-300"
+            className="relative w-full max-w-6xl h-full md:h-auto max-h-[90vh] bg-white dark:bg-[#181a20] rounded-[2rem] overflow-hidden flex flex-col md:flex-row shadow-2xl animate-in zoom-in-95 duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-6 right-6 p-2 bg-slate-100 rounded-full text-black z-[120]"
+              className="absolute top-6 right-6 p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-black dark:text-white z-[120]"
               onClick={closeModal}
             >
               <X size={24} />
             </button>
-            <div className="relative w-full md:w-[60%] h-1/2 md:h-auto bg-slate-50 flex items-center justify-center min-h-[300px]">
+            <div className="relative w-full md:w-[60%] h-1/2 md:h-auto bg-slate-50 dark:bg-[#1e2129] flex items-center justify-center min-h-[300px]">
               <Image
                 src={selectedProject.images![currentImgIndex]}
                 alt="Detail"
@@ -727,13 +852,13 @@ const Portfolio = () => {
               {selectedProject.images!.length > 1 && (
                 <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between">
                   <button
-                    className="p-2 bg-white/80 hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-md"
+                    className="p-2 bg-white dark:bg-[#181a20]/80 hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-md"
                     onClick={prevSlide}
                   >
                     <ChevronLeft size={20} />
                   </button>
                   <button
-                    className="p-2 bg-white/80 hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-md"
+                    className="p-2 bg-white dark:bg-[#181a20]/80 hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-md"
                     onClick={nextSlide}
                   >
                     <ChevronRight size={20} />
@@ -741,17 +866,17 @@ const Portfolio = () => {
                 </div>
               )}
             </div>
-            <div className="w-full md:w-[40%] p-10 flex flex-col justify-between overflow-y-auto bg-white border-l border-slate-50">
+            <div className="w-full md:w-[40%] p-10 flex flex-col justify-between overflow-y-auto bg-white dark:bg-[#181a20] border-l border-slate-50 dark:border-slate-700/40">
               <div className="space-y-6 text-left">
                 <header className="space-y-1">
                   <span className="text-[10px] font-mono text-blue-600 uppercase tracking-widest font-bold font-mono">
                     Detail View
                   </span>
-                  <h3 className="text-2xl font-bold text-black uppercase tracking-tight">
+                  <h3 className="text-2xl font-bold text-black dark:text-white uppercase tracking-tight">
                     {selectedProject.title}
                   </h3>
                 </header>
-                <div className="space-y-4 font-light text-slate-600 text-sm leading-relaxed">
+                <div className="space-y-4 font-light text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                   {selectedProject.detailDesc || selectedProject.desc}
                 </div>
               </div>
