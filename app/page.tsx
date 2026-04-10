@@ -756,7 +756,7 @@ const Portfolio = () => {
           </p>
           <div className="flex flex-col items-center gap-3">
             <p className="text-[11px] text-slate-400 dark:text-slate-500 tracking-wide font-light break-keep text-center">
-              이 페이지는 <span className="font-bold text-slate-600 dark:text-slate-300">Vibe Coding</span>으로 제작되었으며, 다음 기술 스택이 사용되었습니다.
+              이 페이지는 <span className="font-bold text-slate-600 dark:text-slate-300">Vibe Coding</span>으로 제작되었으며, 다음 패키지가 사용되었습니다.
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
               {["Next.js", "React", "Tailwind CSS", "TypeScript", "Framer Motion", "Lucide Icons"].map((tech) => (
