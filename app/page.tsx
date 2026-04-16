@@ -244,12 +244,12 @@ const OkinawaTrip = () => {
           <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full"></span>
           <span>Family Trip Planner</span>
         </div>
-        <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-[1.3] text-black dark:text-white mb-8 break-keep relative">
-          8인 대가족이 함께하는
-          <br className="md:block hidden" />
-          <span className="mt-3 relative z-10 font-bold text-5xl md:text-7xl inline-block tracking-tight">
-            오키나와 여행
-            <span className="absolute left-0 bottom-1 w-full h-[12px] bg-[#ffeb3b] dark:bg-blue-500 -z-10 rounded-sm transition-colors"></span>
+        <p className="text-sm md:text-lg font-medium text-slate-500 dark:text-slate-400 mb-3 tracking-tight"></p>
+        <h1 className="text-4xl md:text-7xl font-bold tracking-tight leading-[1.1] text-black dark:text-white mb-8 break-keep relative">
+          오키나와{" "}
+          <span className="relative z-10 inline-block">
+            가족여행
+            <span className="absolute left-0 bottom-1.5 md:bottom-2 w-full h-[12px] md:h-[24px] bg-[#ffeb3b] dark:bg-blue-500/50 -z-10 rounded-sm transition-colors"></span>
           </span>
         </h1>
         <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed font-light break-keep">
@@ -291,7 +291,11 @@ const OkinawaTrip = () => {
             className="p-1 md:p-1.5 shrink-0 rounded-full transition-all text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white"
             aria-label="Toggle Dark Mode"
           >
-            {isDark ? <Sun className="w-4 h-4 md:w-4 md:h-4" /> : <Moon className="w-4 h-4 md:w-4 md:h-4" />}
+            {isDark ? (
+              <Sun className="w-4 h-4 md:w-4 md:h-4" />
+            ) : (
+              <Moon className="w-4 h-4 md:w-4 md:h-4" />
+            )}
           </button>
         </nav>
       </div>
