@@ -260,14 +260,14 @@ const OkinawaTrip = () => {
       {/* 스티키 네비게이션 (글래스모피즘 투명도 및 블러 강화) */}
       <div
         ref={navWrapperRef}
-        className="sticky top-8 z-[100] w-full flex justify-center px-4 md:px-6 mb-16 pointer-events-none"
+        className="sticky top-8 z-[100] w-full flex justify-center px-2 md:px-6 mb-16 pointer-events-none"
       >
-        <nav className="pointer-events-auto flex items-center gap-4 md:gap-8 px-6 md:px-10 py-3 md:py-4 rounded-full border border-white/40 dark:border-slate-700/50 bg-white/60 dark:bg-[#1a1d24]/60 backdrop-blur-md shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors max-w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <nav className="pointer-events-auto flex items-center gap-2 md:gap-8 px-3 md:px-10 py-2.5 md:py-4 rounded-full border border-white/40 dark:border-slate-700/50 bg-white/60 dark:bg-[#1a1d24]/60 backdrop-blur-md shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors max-w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {itinerary.map((day) => (
             <button
               key={day.id}
               onClick={() => scrollToSection(day.id)}
-              className={`text-[13px] md:text-[14px] font-medium relative transition-colors px-2 py-1 whitespace-nowrap shrink-0 ${
+              className={`text-[12px] md:text-[14px] font-medium relative transition-colors px-1.5 md:px-2 py-1 whitespace-nowrap shrink-0 ${
                 activeSection === day.id
                   ? "text-black dark:text-white font-bold"
                   : "text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white"
@@ -277,7 +277,7 @@ const OkinawaTrip = () => {
               {activeSection === day.id && (
                 <motion.span
                   layoutId="active-nav-indicator"
-                  className="absolute -bottom-1.5 left-0 w-full h-1 bg-[#ffeb3b] dark:bg-blue-500 rounded-full"
+                  className="absolute -bottom-1 left-0 w-full h-[3px] md:h-1 bg-[#ffeb3b] dark:bg-blue-500 rounded-full"
                   transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                 />
               )}
@@ -285,13 +285,13 @@ const OkinawaTrip = () => {
           ))}
 
           {/* 메뉴 구분선 및 다크모드 아이콘 */}
-          <div className="w-px h-4 bg-slate-300 dark:bg-slate-700/80 mx-1 shrink-0"></div>
+          <div className="w-px h-3 md:h-4 bg-slate-300 dark:bg-slate-700/80 mx-1 shrink-0"></div>
           <button
             onClick={toggleTheme}
-            className="p-1 shrink-0 rounded-full transition-all text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white"
+            className="p-1 md:p-1.5 shrink-0 rounded-full transition-all text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white"
             aria-label="Toggle Dark Mode"
           >
-            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            {isDark ? <Sun className="w-4 h-4 md:w-4 md:h-4" /> : <Moon className="w-4 h-4 md:w-4 md:h-4" />}
           </button>
         </nav>
       </div>
