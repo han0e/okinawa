@@ -1134,9 +1134,9 @@ const OkinawaTrip = () => {
                       </div>
                     </div>
                     {schedule.travelTime && (
-                      <div className="flex items-center gap-2 py-2 px-4 text-[13px] text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center justify-center gap-2 py-3 md:py-2 px-0 md:px-4 text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">
                         <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
-                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 whitespace-nowrap backdrop-blur-sm">
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 whitespace-nowrap backdrop-blur-sm text-center">
                           {schedule.travelTime?.includes("도보") ? (
                             <PersonStanding
                               size={12}
@@ -1147,7 +1147,9 @@ const OkinawaTrip = () => {
                           ) : (
                             <Car size={12} className="opacity-70 shrink-0" />
                           )}
-                          {schedule.travelTime}
+                          <span className="font-medium">
+                            {schedule.travelTime}
+                          </span>
                         </span>
                         <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
                       </div>
