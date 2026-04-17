@@ -25,6 +25,8 @@ import {
   BaggageClaim,
   PlaneTakeoff,
   Bus,
+  Wallet,
+  X,
 } from "lucide-react";
 
 // Custom Dolphin SVG Path (provided by User)
@@ -60,7 +62,26 @@ const OkinawaTrip = () => {
   const [activeSection, setActiveSection] = useState("day1");
   const [isSticky, setIsSticky] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [isCostModalOpen, setIsCostModalOpen] = useState(false);
   const navWrapperRef = useRef<HTMLDivElement>(null);
+
+  const costs = [
+    { item: "항공권", price: "3,295,550", note: "티웨이" },
+    {
+      item: "숙소",
+      price: "2,510,554",
+      note: "그랜드 머큐어 오키나와 케이프 잔파 리조트",
+    },
+    { item: "렌트카1", price: "298,700", note: "" },
+    { item: "렌트카2", price: "미정", note: "" },
+    {
+      item: "츄라우미 입장료",
+      price: "109,573",
+      note: "추후 구매(예약일로부터 28일 제약)",
+    },
+    { item: "합계", price: "6,214,377", note: "", isTotal: true },
+    { item: "인당비용", price: "776,797", note: "", isPerPerson: true },
+  ];
 
   useEffect(() => {
     // 최초 접속 시 테마 확인
@@ -486,8 +507,28 @@ const OkinawaTrip = () => {
             </button>
           ))}
 
+          <button
+            onClick={() => setIsCostModalOpen(true)}
+            className={`text-[12px] md:text-[14px] font-medium transition-colors px-1.5 md:px-2 py-1 items-center gap-1.5 hidden md:flex ${
+              isCostModalOpen
+                ? "text-black dark:text-white"
+                : "text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
+            }`}
+          >
+            <Wallet size={14} />
+            비용
+          </button>
+
+          {/* 모바일용 비용 버튼 (아이콘만) */}
+          <button
+            onClick={() => setIsCostModalOpen(true)}
+            className="md:hidden p-1.5 text-slate-600 dark:text-slate-400"
+          >
+            <Wallet size={16} />
+          </button>
+
           {/* 메뉴 구분선 및 다크모드 아이콘 */}
-          <div className="w-px h-3 md:h-4 bg-slate-300 dark:bg-slate-700/80 mx-1 shrink-0"></div>
+          <div className="w-px h-3 md:h-4 bg-slate-400 dark:bg-slate-700/80 mx-1 shrink-0"></div>
           <button
             onClick={toggleTheme}
             className="p-1 md:p-1.5 shrink-0 rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
@@ -1119,8 +1160,140 @@ const OkinawaTrip = () => {
         ))}
       </main>
 
-      <footer className="max-w-6xl mx-auto px-6 mt-32 text-center pb-24 border-t border-slate-200 dark:border-slate-800 pt-16 text-[12px] tracking-widest text-slate-400 dark:text-slate-500 uppercase transition-colors">
-        <p className="italic font-medium">© 2026 FAMILY TRIP PLANNER</p>
+      {/* 비용 모달 */}
+      <AnimatePresence>
+        {isCostModalOpen && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCostModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              className="relative w-full max-w-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl rounded-[40px] shadow-2xl overflow-hidden border border-white/20 dark:border-slate-800"
+            >
+              <div className="p-6 md:p-10">
+                <div className="flex items-center justify-between mb-8 md:mb-10">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+                      <Wallet size={24} />
+                    </div>
+                    <div>
+                      <h2 className="text-xl md:text-2xl font-bold text-black dark:text-white tracking-tight">
+                        여행 경비 내역
+                      </h2>
+                      <p className="text-[12px] md:text-sm text-slate-500 font-medium mt-0.5">
+                        성인 8인 기준 예상 비용 (항공/숙소/렌트/입장료)
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsCostModalOpen(false)}
+                    className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div className="bg-slate-50/50 dark:bg-slate-800/30 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-800/50 overflow-x-auto">
+                  <table className="w-full text-left border-collapse min-w-[400px]">
+                    <thead>
+                      <tr className="border-b border-slate-200/50 dark:border-slate-700/50">
+                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+                          항목
+                        </th>
+                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-[0.1em] text-right">
+                          금액
+                        </th>
+                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+                          비고
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50">
+                      {costs.map((row, idx) => (
+                        <tr
+                          key={idx}
+                          className={`${
+                            row.isTotal || row.isPerPerson
+                              ? "bg-blue-500/5 dark:bg-blue-500/10"
+                              : "hover:bg-white/50 dark:hover:bg-white/5 transition-colors"
+                          }`}
+                        >
+                          <td
+                            className={`px-4 md:px-6 py-4 text-[13px] md:text-[14px] whitespace-nowrap ${
+                              row.isTotal || row.isPerPerson
+                                ? "font-bold text-blue-600 dark:text-blue-400"
+                                : "text-slate-700 dark:text-slate-300 font-medium"
+                            }`}
+                          >
+                            {row.item}
+                          </td>
+                          <td
+                            className={`px-4 md:px-6 py-4 text-[13px] md:text-[14px] text-right tabular-nums whitespace-nowrap ${
+                              row.isTotal || row.isPerPerson
+                                ? "font-bold text-blue-600 dark:text-blue-400"
+                                : "text-slate-900 dark:text-white font-semibold"
+                            }`}
+                          >
+                            {row.price}
+                            <span className="text-[11px] md:text-[12px] ml-1 font-normal text-slate-400">
+                              {row.price === "미정" ? "" : "원"}
+                            </span>
+                          </td>
+                          <td className="px-4 md:px-6 py-4 text-[12px] md:text-[13px] text-slate-500 break-keep">
+                            {row.note}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-8 p-5 bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl border border-amber-100/50 dark:border-amber-900/20">
+                  <p className="text-[12px] text-amber-700/80 dark:text-amber-400/80 leading-relaxed font-medium whitespace-pre-line">
+                    {`* 렌트카2 비용 및 현지 식비, 주유비, 기타 개인 경비는 제외된 사전 확정/예상액입니다.\n* 츄라우미 입장료는 방문 28일 전 예약이 필요합니다.`}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <footer className="max-w-4xl mx-auto px-6 py-20 mt-24 border-t border-slate-200 dark:border-slate-800 transition-all">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2.5">
+              <span className="px-2.5 py-1 rounded-[6px] bg-black dark:bg-white text-white dark:text-black text-[10px] font-black tracking-tighter uppercase">
+                Okinawa
+              </span>
+              <span className="text-xs font-bold text-slate-400 tracking-tight">
+                2026 Family Trip Planner
+              </span>
+            </div>
+            <p className="text-sm text-slate-500 font-medium">
+              &copy; 오키나와 여행 가이드@2026, Hanyeong Kim
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2.5">
+            {["React", "Next.js", "Tailwind", "Framer Motion", "Lucide"].map(
+              (tech) => (
+                <span
+                  key={tech}
+                  className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-[11px] font-bold text-slate-600 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700/50 transition-colors hover:border-slate-400"
+                >
+                  {tech}
+                </span>
+              ),
+            )}
+          </div>
+        </div>
       </footer>
     </div>
   );
