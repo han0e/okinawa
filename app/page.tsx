@@ -76,11 +76,14 @@ const OkinawaTrip = () => {
     { item: "렌트카2", price: "298,700", note: "" },
     {
       item: "츄라우미 입장료",
-      price: "109,573",
-      note: "추후 구매(예약일로부터 28일 제약)",
+      price: "110,000",
+      note: "8인 기준 / 추후 구매(예약일로부터 28일 제약)",
     },
-    { item: "합계", price: "6,214,377", note: "", isTotal: true },
-    { item: "인당비용", price: "776,797", note: "", isPerPerson: true },
+    { item: "글라스보트", price: "70,000", note: "8인 기준" },
+    { item: "만좌모", price: "6,600", note: "8인 기준" },
+    { item: "주유비", price: "100,000", note: "대당 약 5만원 / 2대 예상" },
+    { item: "합계", price: "6,690,104", note: "", isTotal: true },
+    { item: "인당비용", price: "836,263", note: "", isPerPerson: true },
   ];
 
   useEffect(() => {
@@ -1257,7 +1260,7 @@ const OkinawaTrip = () => {
 
                 <div className="mt-8 p-5 bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl border border-amber-100/50 dark:border-amber-900/20">
                   <p className="text-[12px] text-amber-700/80 dark:text-amber-400/80 leading-relaxed font-medium whitespace-pre-line">
-                    {`* 렌트카2 비용 및 현지 식비, 주유비, 기타 개인 경비는 제외된 사전 확정/예상액입니다.\n* 츄라우미 입장료는 방문 28일 전 예약이 필요합니다.`}
+                    {`* 렌트카2 비용 및 현지 식비, 기타 개인 경비는 제외된 사전 확정/예상액입니다.\n* 츄라우미 입장료는 방문 28일 전 예약이 필요합니다.`}
                   </p>
                 </div>
               </div>
