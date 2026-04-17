@@ -239,6 +239,18 @@ const OkinawaTrip = () => {
       className="min-h-screen bg-[#f3f4f6] dark:bg-[#0a0c10] text-[#1a1a1a] dark:text-slate-200 pb-32 antialiased selection:bg-[#ffeb3b]/60 dark:selection:bg-blue-500/30 relative transition-colors duration-500"
       style={{ fontFamily: '"Pretendard", system-ui, sans-serif' }}
     >
+      {/* 헤더 배경 이미지 영역 (글래스모피즘 적용) */}
+      <div className="absolute top-0 left-0 w-full h-[500px] md:h-[700px] -z-10 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center scale-105"
+          style={{ 
+            backgroundImage: 'url("/images/hero_bg.jpg")',
+          }}
+        />
+        <div className="absolute inset-0 bg-white/40 dark:bg-black/50 backdrop-blur-[12px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#f3f4f6] dark:to-[#0a0c10]" />
+      </div>
+
       <header className="max-w-6xl mx-auto px-6 pt-32 pb-8 relative z-10">
         <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 text-[11px] tracking-[0.2em] uppercase mb-6">
           <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full"></span>
