@@ -262,7 +262,14 @@ const OkinawaTrip = () => {
         ref={navWrapperRef}
         className="sticky top-8 z-[100] w-full flex justify-center px-2 md:px-6 mb-16 pointer-events-none"
       >
-        <nav className="pointer-events-auto flex items-center gap-2 md:gap-8 px-3 md:px-10 py-2.5 md:py-4 rounded-full border border-white/40 dark:border-slate-700/50 bg-white/60 dark:bg-[#1a1d24]/60 backdrop-blur-md shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors max-w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <nav 
+          className="pointer-events-auto flex items-center gap-2 md:gap-8 px-3 md:px-10 py-2.5 md:py-4 rounded-full border border-white/40 dark:border-slate-700/40 backdrop-blur-[20px] shadow-[0_4px_34px_rgba(0,0,0,0.15)] dark:shadow-none transition-all max-w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          style={{
+            background: isDark 
+              ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(30, 41, 59, 0.3) 30%)' 
+              : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3) 30%)'
+          }}
+        >
           {itinerary.map((day) => (
             <button
               key={day.id}
@@ -327,7 +334,12 @@ const OkinawaTrip = () => {
                 {day.schedules.map((schedule, idx) => (
                   <div
                     key={idx}
-                    className="bg-white dark:bg-[#12141a] rounded-2xl p-6 md:p-8 border border-slate-200 dark:border-slate-800/80 shadow-sm hover:shadow-md dark:shadow-none transition-all group"
+                    className="rounded-[32px] p-6 md:p-8 border border-white/40 dark:border-slate-800/50 backdrop-blur-[10px] shadow-[0_4px_34px_rgba(0,0,0,0.08)] transition-all group"
+                    style={{
+                      background: isDark 
+                        ? 'linear-gradient(135deg, rgba(18, 20, 26, 0.95), rgba(18, 20, 26, 0.8) 30%)' 
+                        : 'linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4) 30%)'
+                    }}
                   >
                     <div className="space-y-4">
                       <div className="flex justify-between items-center text-slate-400 dark:text-slate-500 text-[15px]">
