@@ -73,7 +73,7 @@ const OkinawaTrip = () => {
       note: "그랜드 머큐어 오키나와 케이프 잔파 리조트",
     },
     { item: "렌트카1", price: "298,700", note: "" },
-    { item: "렌트카2", price: "미정", note: "" },
+    { item: "렌트카2", price: "298,700", note: "" },
     {
       item: "츄라우미 입장료",
       price: "109,573",
@@ -176,7 +176,7 @@ const OkinawaTrip = () => {
           icon: <Utensils size={16} />,
           tags: ["#식사", "#점심"],
           mapQuery: "킨치치소바 오키나와",
-          travelTime: "차로 약 40분 (잔파 → 아메리칸 빌리지)",
+          travelTime: "차로 약 40분 (킨치치소바 → 아메리칸 빌리지)",
         },
         {
           time: "14:30 - 18:00",
@@ -192,7 +192,7 @@ const OkinawaTrip = () => {
           desc: "아메리칸 빌리지점. 대형 단체석 구비, 여행의 하이라이트 고기 만찬",
           icon: <Utensils size={16} />,
           mapQuery: "스테이크 하우스 88 아메리칸 빌리지",
-          travelTime: "차로 약 40분 (차탄 → 잔파 리조트)",
+          travelTime: "차로 약 40분 (아메리칸 빌리지 → 잔파 리조트)",
         },
       ],
     },
@@ -229,7 +229,7 @@ const OkinawaTrip = () => {
         {
           time: "11:00 - 12:00",
           title: "점심",
-          desc: "북부 이동 중 점심 식사",
+          desc: "뭐먹을지 알려주실분..추천받습니다.",
           icon: <Utensils size={16} />,
           travelTime: "차로 약 30분 (나고 → 추라우미수족관)",
         },
@@ -243,8 +243,8 @@ const OkinawaTrip = () => {
         },
         {
           time: "17:00 - 18:30",
-          title: "저녁: 스시",
-          desc: "저녁 식사 후 숙소 복귀",
+          title: "저녁",
+          desc: "뭐먹을지 알려주실분..추천받습니다.",
           icon: <Utensils size={16} />,
           travelTime: "차로 약 1시간 (북부 → 잔파 리조트)",
         },
@@ -1163,7 +1163,7 @@ const OkinawaTrip = () => {
       {/* 비용 모달 */}
       <AnimatePresence>
         {isCostModalOpen && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center px-4">
+          <div className="fixed inset-0 z-200 flex items-center justify-center px-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1204,13 +1204,13 @@ const OkinawaTrip = () => {
                   <table className="w-full text-left border-collapse min-w-[400px]">
                     <thead>
                       <tr className="border-b border-slate-200/50 dark:border-slate-700/50">
-                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-widest">
                           항목
                         </th>
-                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-[0.1em] text-right">
+                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-widest text-right">
                           금액
                         </th>
-                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-widest">
                           비고
                         </th>
                       </tr>
@@ -1246,7 +1246,7 @@ const OkinawaTrip = () => {
                               {row.price === "미정" ? "" : "원"}
                             </span>
                           </td>
-                          <td className="px-4 md:px-6 py-4 text-[12px] md:text-[13px] text-slate-500 break-keep">
+                          <td className="px-4 md:px-6 py-4 text-[12px] md:text-[13px] text-slate-500 wrap-break-word leading-relaxed min-w-[120px]">
                             {row.note}
                           </td>
                         </tr>
