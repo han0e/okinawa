@@ -87,15 +87,13 @@ const OkinawaTrip = () => {
   ];
 
   useEffect(() => {
-    // 최초 접속 시 테마 확인
+    // 최초 접속 시 테마 확인 (저장된 값이 없으면 기본 '라이트 모드')
     const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+    if (savedTheme === "dark") {
       setIsDark(true);
       document.documentElement.classList.add("dark");
     } else {
+      setIsDark(false);
       document.documentElement.classList.remove("dark");
     }
   }, []);
