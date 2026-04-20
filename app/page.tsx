@@ -31,6 +31,7 @@ import {
   ExternalLink,
   ShieldCheck,
   Sparkles,
+  FerrisWheel,
 } from "lucide-react";
 
 // Custom Dolphin SVG Path (provided by User)
@@ -574,7 +575,7 @@ const OkinawaTrip = () => {
             time: "10:55 - 11:55",
             title: "나고 파인애플 파크",
             desc: "강풍/파도로 해중공원 불가 시 파인애플 보러간다!",
-            icon: <Sparkles size={16} />,
+            icon: <FerrisWheel size={16} />,
             mapQuery: "나고 파인애플 파크",
             websiteUrl: "https://www.nagopineapplepark.com/kr/",
             prevTravelTime: "차로 약 40분 (만좌모 → 나고 파인애플 파크)",
