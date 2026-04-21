@@ -396,8 +396,8 @@ const OkinawaTrip = () => {
     { item: "글라스보트", price: "70,000", note: "8인 기준" },
     { item: "만좌모", price: "6,600", note: "8인 기준" },
     { item: "주유비", price: "100,000", note: "대당 약 5만원 / 2대 예상" },
-    { item: "합계", price: "6,690,104", note: "", isTotal: true },
-    { item: "인당비용", price: "836,263", note: "", isPerPerson: true },
+    { item: "합계", price: "7,281,604", note: "", isTotal: true },
+    { item: "인당비용", price: "910,200", note: "", isPerPerson: true },
   ];
 
   useEffect(() => {
