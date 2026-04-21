@@ -386,8 +386,8 @@ const OkinawaTrip = () => {
       price: "2,510,554",
       note: "그랜드 머큐어 오키나와 케이프 잔파 리조트",
     },
-    { item: "렌트카1", price: "298,700", note: "" },
-    { item: "렌트카2", price: "298,700", note: "" },
+    { item: "렌트카1", price: "298,700", note: "델리카D2" },
+    { item: "렌트카2", price: "383,600", note: "프리드하이브리드" },
     {
       item: "츄라우미 입장료",
       price: "110,000",
