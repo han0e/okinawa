@@ -481,7 +481,7 @@ const OkinawaTrip = () => {
         },
         {
           time: "15:40 - 17:00",
-          title: "파르코시티(대형쇼핑몰)",
+          title: "점저: 파르코시티(대형쇼핑몰)",
           desc: "푸드코트에서 간단한 식사 및 1층 마트에서 장보기(회/초밥등..)",
           icon: <ShoppingCart size={16} />,
           mapQuery: "산에이 파르코시티 우라소에",
@@ -584,7 +584,7 @@ const OkinawaTrip = () => {
         },
         {
           time: "11:55 - 13:00",
-          title: "하마스시 나고점",
+          title: "점심: 하마스시 나고점",
           desc: "가성비 좋은 회전초밥 맛집에서 점심 식사",
           icon: <Utensils size={16} />,
           mapUrl: "https://maps.app.goo.gl/JtYim1L5rNdcu79n7",
@@ -600,7 +600,7 @@ const OkinawaTrip = () => {
         },
         {
           time: "17:00 - 18:30",
-          title: "야끼니꾸 고엔 나고점",
+          title: "저녁: 야끼니꾸 고엔 나고점",
           desc: "무한리필 야키니쿠로 든든한 저녁 식사",
           icon: <Utensils size={16} />,
           mapQuery: "Yakiniku Goen Okinawa Nago",
