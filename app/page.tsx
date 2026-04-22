@@ -372,6 +372,7 @@ const OkinawaTrip = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isCostModalOpen, setIsCostModalOpen] = useState(false);
+  const [isFoodDetailOpen, setIsFoodDetailOpen] = useState(false);
   const [isChecklistModalOpen, setIsChecklistModalOpen] = useState(false);
   const [weatherEmoji, setWeatherEmoji] = useState("☀️");
   const [flippedItems, setFlippedItems] = useState<{ [key: string]: boolean }>(
@@ -380,14 +381,14 @@ const OkinawaTrip = () => {
   const navWrapperRef = useRef<HTMLDivElement>(null);
 
   const costs = [
-    { item: "항공권", price: "3,295,550", note: "티웨이" },
+    { item: "항공권", price: "3,295,550", note: "티웨이(R56T7D / GL2D63)" },
     {
       item: "숙소",
       price: "2,510,554",
       note: "그랜드 머큐어 오키나와 케이프 잔파 리조트",
     },
-    { item: "렌트카1", price: "298,700", note: "델리카D2" },
-    { item: "렌트카2", price: "383,600", note: "프리드하이브리드" },
+    { item: "렌트카1", price: "384,700", note: "시엔타" },
+    { item: "렌트카2", price: "470,600", note: "복시/스탭웨건" },
     {
       item: "츄라우미 입장료",
       price: "110,000",
@@ -396,8 +397,9 @@ const OkinawaTrip = () => {
     { item: "글라스보트", price: "70,000", note: "8인 기준" },
     { item: "만좌모", price: "6,600", note: "8인 기준" },
     { item: "주유비", price: "100,000", note: "대당 약 5만원 / 2대 예상" },
-    { item: "합계", price: "7,281,604", note: "", isTotal: true },
-    { item: "인당비용", price: "910,200", note: "", isPerPerson: true },
+    { item: "식비", price: "1,040,480", note: "상세내역" },
+    { item: "합계", price: "7,947,304", note: "", isTotal: true },
+    { item: "인당비용", price: "993,413", note: "", isPerPerson: true },
   ];
 
   useEffect(() => {
@@ -509,10 +511,9 @@ const OkinawaTrip = () => {
       schedules: [
         {
           time: "07:30 - 12:30",
-          title: "조식 후 리조트 수영장",
-          desc: "조식 후 리조트 수영장에서 물놀이 및 휴양",
+          title: "조식 후 리조트 수영장 & 골프",
+          desc: "조식 후 리조트 수영장에서 물놀이 및 골프 진행",
           icon: <WavesLadder size={16} />,
-          tags: ["#휴양", "#수영장"],
           travelTime: "차로 약 5분 (리조트 인근)",
         },
         {
@@ -520,7 +521,6 @@ const OkinawaTrip = () => {
           title: "점심: 킨치치소바",
           desc: "리조트에서 5분 거리, 바다 뷰가 펼쳐지는 수제 소바 맛집",
           icon: <Utensils size={16} />,
-          tags: ["#식사", "#점심"],
           mapQuery: "킨치치소바 오키나와",
           travelTime: "차로 약 40분 (킨치치소바 → 아메리칸 빌리지)",
         },
@@ -533,11 +533,11 @@ const OkinawaTrip = () => {
           travelTime: "도보 약 5분",
         },
         {
-          time: "18:10 - 19:00",
-          title: "저녁: 스테이크 하우스 88",
-          desc: "아메리칸 빌리지점. 대형 단체석 구비, 여행의 하이라이트 고기 만찬",
+          time: "18:10 - 19:30",
+          title: "저녁: 카이센 밧텐",
+          desc: "장어덮밥 및 해산물요리. 신선한 해산물을 즐길 수 있는 로컬 맛집",
           icon: <Utensils size={16} />,
-          mapQuery: "스테이크 하우스 88 아메리칸 빌리지",
+          mapQuery: "Kaisen Batten",
           travelTime: "차로 약 40분 (아메리칸 빌리지 → 잔파 리조트)",
         },
       ],
@@ -719,7 +719,9 @@ const OkinawaTrip = () => {
       title.includes("돈키호테") ||
       title.includes("아메리칸 빌리지") ||
       title.includes("장보기") ||
-      title.includes("편의점")
+      title.includes("편의점") ||
+      title.includes("파르코") ||
+      title.includes("쇼핑몰")
     ) {
       type = "cart";
     } else if (title.includes("수영장")) {
@@ -866,7 +868,7 @@ const OkinawaTrip = () => {
               onClick={() => scrollToSection(day.id)}
               className={`text-[12px] md:text-[14px] font-medium relative transition-colors px-1.5 md:px-2 py-1 whitespace-nowrap shrink-0 ${
                 activeSection === day.id
-                  ? "text-black dark:text-white font-bold"
+                  ? "text-black dark:text-white font-semibold"
                   : "text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
               }`}
             >
@@ -953,7 +955,7 @@ const OkinawaTrip = () => {
                       {day.title}
                     </h2>
                   </div>
-                  <h3 className="text-3xl font-bold tracking-tight text-black dark:text-white transition-colors">
+                  <h3 className="text-3xl font-semibold tracking-tight text-black dark:text-white transition-colors">
                     {day.date.split(" — ")[0]}
                     {day.date.includes(" — ") && (
                       <span className="block text-xl font-semibold text-slate-500 dark:text-slate-400 mt-1 tracking-normal">
@@ -1008,7 +1010,7 @@ const OkinawaTrip = () => {
                                 triggerAnimation(cardKey, schedule.title)
                               }
                               className={
-                                /조식|소바|점심|저녁|스테이크|식당|식사|타마고|호토모토|우후야|카이센테이|블루씰|스시|맛집|출발|도착|돈키호테|빌리지|수영장|만좌모|부세나|츄라우미|파인애플/.test(
+                                /조식|소바|점심|저녁|스테이크|식당|식사|타마고|호토모토|우후야|카이센테이|블루씰|스시|맛집|출발|도착|돈키호테|빌리지|수영장|만좌모|부세나|츄라우미|파인애플|파르코|쇼핑몰|마트/.test(
                                   schedule.title,
                                 )
                                   ? "cursor-pointer"
@@ -1555,7 +1557,7 @@ const OkinawaTrip = () => {
                                           [cardKey]: true,
                                         }));
                                       }}
-                                      className="px-4 py-2 rounded-full border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[12px] font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all flex items-center gap-1.5 shadow-sm"
+                                      className="px-4 py-2 rounded-full border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[12px] font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all flex items-center gap-1.5 shadow-sm"
                                     >
                                       Plan B <Sparkles size={12} />
                                     </button>
@@ -1563,7 +1565,7 @@ const OkinawaTrip = () => {
                                 </div>
 
                                 <div className="flex items-center gap-3 relative">
-                                  <h4 className="text-xl md:text-2xl font-bold text-black dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                  <h4 className="text-xl md:text-2xl font-semibold text-black dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                     {schedule.title}
                                   </h4>
                                   {(schedule.mapQuery || schedule.mapUrl) && (
@@ -1584,7 +1586,7 @@ const OkinawaTrip = () => {
                                         size={13}
                                         className="group-hover/nav:animate-pulse"
                                       />
-                                      <span className="text-[12px] font-bold tracking-tight">
+                                      <span className="text-[12px] font-semibold tracking-tight">
                                         길안내
                                       </span>
                                     </a>
@@ -1598,7 +1600,7 @@ const OkinawaTrip = () => {
                                       title="공식 홈페이지 확인"
                                       onClick={(e) => e.stopPropagation()}
                                     >
-                                      <span className="text-[12px] font-bold tracking-tight">
+                                      <span className="text-[12px] font-semibold tracking-tight">
                                         운행여부 체크
                                       </span>
                                     </a>
@@ -1631,7 +1633,7 @@ const OkinawaTrip = () => {
                                   triggerAnimation(cardKey, schedule.alt!.title)
                                 }
                                 className={
-                                  /조식|소바|점심|저녁|스테이크|식당|식사|타마고|호토모토|우후야|카이센테이|블루씰|스시|맛집|출발|도착|돈키호테|빌리지|수영장|만좌모|부세나|츄라우미|파인애플/.test(
+                                  /조식|소바|점심|저녁|스테이크|식당|식사|타마고|호토모토|우후야|카이센테이|블루씰|스시|맛집|출발|도착|돈키호테|빌리지|수영장|만좌모|부세나|츄라우미|파인애플|파르코|쇼핑몰|마트/.test(
                                     schedule.alt.title,
                                   )
                                     ? "cursor-pointer"
@@ -1915,14 +1917,14 @@ const OkinawaTrip = () => {
                                           [cardKey]: false,
                                         }));
                                       }}
-                                      className="px-4 py-2 rounded-full border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[12px] font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all flex items-center gap-1.5 shadow-sm"
+                                      className="px-4 py-2 rounded-full border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[12px] font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all flex items-center gap-1.5 shadow-sm"
                                     >
                                       Back to Plan A <Sparkles size={12} />
                                     </button>
                                   </div>
 
                                   <div className="flex items-center gap-3 relative">
-                                    <h4 className="text-xl md:text-2xl font-bold text-black dark:text-white tracking-tight transition-colors">
+                                    <h4 className="text-xl md:text-2xl font-semibold text-black dark:text-white tracking-tight transition-colors">
                                       {schedule.alt.title}
                                     </h4>
                                     {schedule.alt.mapQuery && (
@@ -1939,7 +1941,7 @@ const OkinawaTrip = () => {
                                           size={13}
                                           className="group-hover/nav:animate-pulse"
                                         />
-                                        <span className="text-[12px] font-bold tracking-tight">
+                                        <span className="text-[12px] font-semibold tracking-tight">
                                           길안내
                                         </span>
                                       </a>
@@ -2042,33 +2044,33 @@ const OkinawaTrip = () => {
                       <Wallet size={24} />
                     </div>
                     <div>
-                      <h2 className="text-xl md:text-2xl font-bold text-black dark:text-white tracking-tight">
+                      <h2 className="text-xl md:text-2xl font-semibold text-black dark:text-white tracking-tight">
                         여행 경비 내역
                       </h2>
                       <p className="text-[12px] md:text-sm text-slate-500 font-medium mt-0.5">
-                        성인 8인 기준 예상 비용 (항공/숙소/렌트/입장료)
+                        성인 8인 기준 예상 비용
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => setIsCostModalOpen(false)}
-                    className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400"
+                    className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400"
                   >
                     <X size={24} />
                   </button>
                 </div>
 
-                <div className="bg-slate-50/50 dark:bg-slate-800/30 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-800/50 overflow-x-auto">
+                <div className="bg-white dark:bg-slate-800/30 rounded-3xl overflow-hidden border border-slate-200/60 dark:border-slate-800/50 overflow-x-auto shadow-sm">
                   <table className="w-full text-left border-collapse min-w-[400px]">
                     <thead>
-                      <tr className="border-b border-slate-200/50 dark:border-slate-700/50">
-                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-widest">
+                      <tr className="bg-slate-50/80 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-700/50">
+                        <th className="px-4 md:px-6 py-4 text-[15px] md:text-[15px] font-semibold text-slate-400 uppercase tracking-widest">
                           항목
                         </th>
-                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-widest text-right">
+                        <th className="px-4 md:px-6 py-4 text-[15px] md:text-[15px] font-semibold text-slate-400 uppercase tracking-widest text-right">
                           금액
                         </th>
-                        <th className="px-4 md:px-6 py-4 text-[11px] md:text-[12px] font-bold text-slate-400 uppercase tracking-widest">
+                        <th className="px-4 md:px-6 py-4 text-[15px] md:text-[15px] font-semibold text-slate-400 uppercase tracking-widest">
                           비고
                         </th>
                       </tr>
@@ -2080,13 +2082,13 @@ const OkinawaTrip = () => {
                           className={`${
                             row.isTotal || row.isPerPerson
                               ? "bg-blue-500/5 dark:bg-blue-500/10"
-                              : "hover:bg-white/50 dark:hover:bg-white/5 transition-colors"
+                              : "even:bg-slate-50/40 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors"
                           }`}
                         >
                           <td
                             className={`px-4 md:px-6 py-4 text-[13px] md:text-[14px] whitespace-nowrap ${
                               row.isTotal || row.isPerPerson
-                                ? "font-bold text-blue-600 dark:text-blue-400"
+                                ? "font-semibold text-blue-600 dark:text-blue-400"
                                 : "text-slate-700 dark:text-slate-300 font-medium"
                             }`}
                           >
@@ -2095,7 +2097,7 @@ const OkinawaTrip = () => {
                           <td
                             className={`px-4 md:px-6 py-4 text-[13px] md:text-[14px] text-right tabular-nums whitespace-nowrap ${
                               row.isTotal || row.isPerPerson
-                                ? "font-bold text-blue-600 dark:text-blue-400"
+                                ? "font-semibold text-blue-600 dark:text-blue-400"
                                 : "text-slate-900 dark:text-white font-semibold"
                             }`}
                           >
@@ -2105,7 +2107,17 @@ const OkinawaTrip = () => {
                             </span>
                           </td>
                           <td className="px-4 md:px-6 py-4 text-[12px] md:text-[13px] text-slate-500 wrap-break-word leading-relaxed min-w-[120px]">
-                            {row.note}
+                            {row.item === "식비" ? (
+                              <button
+                                onClick={() => setIsFoodDetailOpen(true)}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all shadow-sm"
+                              >
+                                {row.note}
+                                <ExternalLink size={12} />
+                              </button>
+                            ) : (
+                              row.note
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -2113,11 +2125,167 @@ const OkinawaTrip = () => {
                   </table>
                 </div>
 
-                <div className="mt-8 p-5 bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl border border-amber-100/50 dark:border-amber-900/20">
-                  <p className="text-[12px] text-amber-700/80 dark:text-amber-400/80 leading-relaxed font-medium whitespace-pre-line">
-                    {`* 렌트카2 비용 및 현지 식비, 기타 개인 경비는 제외된 사전 확정/예상액입니다.\n* 츄라우미 입장료는 방문 28일 전 예약이 필요합니다.`}
+                <div className="mt-5 p-4 bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl border border-amber-100/50 dark:border-amber-900/20">
+                  <p className="text-[13px] text-amber-700/80 dark:text-amber-400/80 leading-relaxed font-medium whitespace-pre-line">
+                    {`* 현지 기타 개인 경비는 제외된 예상액입니다.\n* 츄라우미 입장료는 방문 28일 전 예약이 필요합니다.`}
                   </p>
                 </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* 식비 상세 모달 */}
+      <AnimatePresence>
+        {isFoodDetailOpen && (
+          <div className="fixed inset-0 z-300 flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsFoodDetailOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[32px] shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800"
+            >
+              <div className="p-6 md:p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                      <Utensils size={20} />
+                    </div>
+                    <h3 className="text-xl font-semibold text-black dark:text-white tracking-tight">
+                      식비 상세 예산
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setIsFoodDetailOpen(false)}
+                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-x-auto shadow-sm">
+                  <table className="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                      <tr className="bg-slate-50/80 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-700/50">
+                        <th className="px-4 py-3.5 text-[13px] font-semibold text-slate-400 uppercase tracking-wider">
+                          날짜
+                        </th>
+                        <th className="px-4 py-3.5 text-[13px] font-semibold text-slate-400 uppercase tracking-wider">
+                          구분
+                        </th>
+                        <th className="px-4 py-3.5 text-[13px] font-semibold text-slate-400 uppercase tracking-wider">
+                          장소 및 메뉴
+                        </th>
+                        <th className="px-4 py-3.5 text-[13px] font-semibold text-slate-400 uppercase tracking-wider text-right">
+                          예상 비용 (엔)
+                        </th>
+                        <th className="px-4 py-3.5 text-[13px] font-semibold text-slate-400 uppercase tracking-wider text-right">
+                          한화 환산 (약)
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50">
+                      {[
+                        {
+                          day: "1일차",
+                          type: "점심",
+                          place: "파르코시티 푸드코트",
+                          yen: "약 10,000",
+                          krw: "약 92,900",
+                        },
+                        {
+                          day: "1일차",
+                          type: "저녁/야식",
+                          place: "마트(파르코) & 편의점(로손)",
+                          yen: "약 15,000",
+                          krw: "약 139,350",
+                        },
+                        {
+                          day: "2일차",
+                          type: "점심",
+                          place: "킨치치소바 (소바)",
+                          yen: "약 10,000",
+                          krw: "약 92,900",
+                        },
+                        {
+                          day: "2일차",
+                          type: "저녁",
+                          place: "카이센 밧텐 (해산물)",
+                          yen: "약 20,000",
+                          krw: "약 185,800",
+                        },
+                        {
+                          day: "3일차",
+                          type: "점심",
+                          place: "하마스시 (회전초밥)",
+                          yen: "약 20,000",
+                          krw: "약 185,800",
+                        },
+                        {
+                          day: "3일차",
+                          type: "저녁",
+                          place: "야키니쿠 고엔 (야키니쿠)",
+                          yen: "약 32,000",
+                          krw: "약 297,280",
+                        },
+                        {
+                          day: "4일차",
+                          type: "기타",
+                          place: "간식 및 공항 잔돈 지출",
+                          yen: "약 5,000",
+                          krw: "약 46,450",
+                        },
+                      ].map((row, i) => (
+                        <tr
+                          key={i}
+                          className="even:bg-slate-50/50 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors"
+                        >
+                          <td className="px-4 py-3 text-[13px] text-slate-500 dark:text-slate-400 font-medium">
+                            {row.day}
+                          </td>
+                          <td className="px-4 py-3 text-[13px] text-slate-600 dark:text-slate-300 font-semibold">
+                            {row.type}
+                          </td>
+                          <td className="px-4 py-3 text-[13px] text-slate-700 dark:text-slate-200 font-medium">
+                            {row.place}
+                          </td>
+                          <td className="px-4 py-3 text-[13px] text-right tabular-nums text-slate-900 dark:text-white font-semibold">
+                            {row.yen}엔
+                          </td>
+                          <td className="px-4 py-3 text-[13px] text-right tabular-nums text-blue-600 dark:text-blue-400 font-semibold">
+                            {row.krw}원
+                          </td>
+                        </tr>
+                      ))}
+                      <tr className="bg-orange-500/5 dark:bg-orange-500/10">
+                        <td
+                          colSpan={3}
+                          className="px-4 py-4 text-[15px] font-semibold text-orange-600 dark:text-orange-400"
+                        >
+                          총합계
+                        </td>
+                        <td className="px-4 py-4 text-[15px] text-right tabular-nums font-semibold text-orange-600 dark:text-orange-400">
+                          약 112,000엔
+                        </td>
+                        <td className="px-4 py-4 text-[15px] text-right tabular-nums font-black text-orange-600 dark:text-orange-400 underline decoration-2 underline-offset-4">
+                          약 1,040,480원
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <p className="mt-3 text-[13px] text-slate-800 leading-relaxed whitespace-pre-line">
+                  {`* 위 금액은 8인 가족 기준의 대략적인 예상치이며, 실제 주문 메뉴와 환율에 따라 차이가 발생할 수 있습니다.\n(적용 환율: 100엔 = 929원 기준 계산)`}
+                </p>
               </div>
             </motion.div>
           </div>
@@ -2148,7 +2316,7 @@ const OkinawaTrip = () => {
                       <ClipboardCheck size={24} />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-black dark:text-white tracking-tight">
+                      <h2 className="text-2xl font-semibold text-black dark:text-white tracking-tight">
                         여행 준비물 & 정보
                       </h2>
                       <p className="text-sm text-slate-500 font-medium mt-0.5">
@@ -2194,7 +2362,7 @@ const OkinawaTrip = () => {
                     >
                       <div className="mt-1 text-green-500">{item.icon}</div>
                       <div className="flex-1">
-                        <h4 className="text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                        <h4 className="text-[13px] font-semibold text-slate-400 uppercase tracking-widest mb-1">
                           {item.label}
                         </h4>
                         {item.link ? (
@@ -2217,14 +2385,14 @@ const OkinawaTrip = () => {
                 </div>
 
                 <div className="mt-8 p-5 bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl border border-blue-100/50 dark:border-blue-900/20 space-y-2">
-                  <p className="text-[12px] text-blue-700/80 dark:text-blue-400/80 leading-relaxed font-medium">
+                  <p className="text-[15px] text-blue-700/80 dark:text-blue-400/80 leading-relaxed font-medium">
                     * 긴급 연락처 (영사관): +81-3-3452-7611
                   </p>
                   <a
                     href="https://0404.go.kr/bbs/contsPst/MST0000000000110/10/detail#:~:text=%EC%98%81%EC%82%AC%EC%95%88%EC%A0%84%EC%BD%9C%EC%84%BC%ED%84%B0%20%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1,%EB%A5%BC%20%EC%A0%9C%EA%B3%B5%EB%B0%9B%EC%9C%BC%EC%8B%A4%20%EC%88%98%20%EC%9E%88%EC%8A%B5%EB%8B%88%EB%8B%A4."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[12px] text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-1"
+                    className="text-[15px] text-blue-600 dark:text-blue-400 font-semibold hover:underline flex items-center gap-1"
                   >
                     * 영사안전콜센터 - 카카오톡 채널 추가{" "}
                     <ExternalLink size={10} />
@@ -2240,10 +2408,10 @@ const OkinawaTrip = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
-              <span className="px-2.5 py-1 rounded-[6px] bg-black dark:bg-white text-white dark:text-black text-[10px] font-black tracking-tighter uppercase">
+              <span className="px-2.5 py-1 rounded-[6px] bg-black dark:bg-white text-white dark:text-black text-[13px] font-black tracking-tighter uppercase">
                 Okinawa
               </span>
-              <span className="text-xs font-bold text-slate-400 tracking-tight">
+              <span className="text-xs font-semibold text-slate-400 tracking-tight">
                 2026 Family Trip Planner
               </span>
             </div>
@@ -2256,7 +2424,7 @@ const OkinawaTrip = () => {
               (tech) => (
                 <span
                   key={tech}
-                  className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-[11px] font-bold text-slate-600 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700/50 transition-colors hover:border-slate-400"
+                  className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-[11px] font-semibold text-slate-600 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700/50 transition-colors hover:border-slate-400"
                 >
                   {tech}
                 </span>
