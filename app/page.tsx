@@ -2082,7 +2082,7 @@ const OkinawaTrip = () => {
                           className={`${
                             row.isTotal || row.isPerPerson
                               ? "bg-blue-500/5 dark:bg-blue-500/10"
-                              : "even:bg-slate-50/40 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors"
+                              : "even:bg-slate-50/40 dark:even:bg-white/2 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors"
                           }`}
                         >
                           <td
@@ -2246,7 +2246,7 @@ const OkinawaTrip = () => {
                       ].map((row, i) => (
                         <tr
                           key={i}
-                          className="even:bg-slate-50/50 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors"
+                          className="even:bg-slate-50/50 dark:even:bg-white/2 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-colors"
                         >
                           <td className="px-4 py-3 text-[13px] text-slate-500 dark:text-slate-400 font-medium">
                             {row.day}
